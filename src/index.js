@@ -25,10 +25,12 @@ wss.on('connection', (ws, req) => {
     console.log(`message: ${JSON.stringify(messageJSON)}`);
     console.log(`message (string): ${message}`);
 
-    if (messageJSON.command === 'debug') {
-      ws.send(api.debug(message));
-    } else {
-      ws.send(message);
+    switch (messageJSON.command) {
+      case 'latestBlock':
+        ws.send(api.latestBlock());
+        break;
+      default:
+        ws.send(message);
     }
   });
 });
