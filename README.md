@@ -4,6 +4,27 @@ Play Cosmo Note
 - Basic REST API server
 
 
+Default config.json file
+==================================
+
+> Place config.json in 'src' directory
+
+- macos
+```
+{
+	"port": 8010,
+	"gethPwd": "/Users/youruser/Library/Ethereum/testnet/geth.ipc"
+}
+```
+- ubuntu
+```
+{
+	"port": 8010,
+	"gethPwd": "/users/myuser/.ethereum/geth.ipc"
+}
+```
+
+
 Express & ES6 REST API Boilerplate
 ==================================
 

@@ -1,8 +1,10 @@
 /* eslint-disable prefer-destructuring */
+import config from '../config.json';
+
 const Web3 = require('web3');
 const net = require('net');
 
-const web3 = new Web3('/Users/bartlomiejsmagacz/Library/Ethereum/testnet/geth.ipc', net);
+const web3 = new Web3(config.gethPwd, net);
 
 const latestBlock = web3.eth.getBlock('latest', (error, result) => {
   if (!error) {

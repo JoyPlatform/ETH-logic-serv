@@ -34,3 +34,7 @@ wss.on('connection', (ws, req) => {
     }
   });
 });
+
+module.exports = {
+  config,
+};
