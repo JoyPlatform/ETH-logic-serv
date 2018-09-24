@@ -20,17 +20,20 @@ wss.on('connection', (ws, req) => {
     try {
       messageJSON = JSON.parse(message);
     } catch (e) {
-      console.log(`error - parse JSON: ${e}`);
+      messageJSON = '';
+      console.log(`> error - parse JSON: ${e}`);
+      ws.send(`error - parse JSON: ${e}`);
     }
-    console.log(`message: ${JSON.stringify(messageJSON)}`);
-    console.log(`message (string): ${message}`);
+    console.log(`= message: ${message}`);
+    console.log(`= message (string): ${JSON.stringify(messageJSON)}`);
 
     switch (messageJSON.command) {
       case 'latestBlock':
         ws.send(api.latestBlock());
         break;
       default:
-        ws.send(message);
+        console.log(`> pong: ${message}`);
+        ws.send(`pong: ${message}`);
     }
   });
 });
