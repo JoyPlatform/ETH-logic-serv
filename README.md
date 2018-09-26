@@ -24,6 +24,20 @@ Default config.json file
 }
 ```
 
+Console output standard
+==================================
+
+```
+    > what we send
+            console.log(`> pong: ${message}`);
+            ws.send(`pong: ${message}`);
+    = internal 
+            console.log(`= message: ${message}`);
+    
+    < what we get
+            
+    
+```
 
 Express & ES6 REST API Boilerplate
 ==================================
