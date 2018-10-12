@@ -31,6 +31,8 @@ wss.on('connection', (ws, req) => {
       case 'latestBlock':
         ws.send(api.latestBlock());
         break;
+      case 'latestBlockNumber':
+        ws.send(api.latestBlockNumber());
       default:
         console.log(`> pong: ${message}`);
         ws.send(`pong: ${message}`);
