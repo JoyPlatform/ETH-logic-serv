@@ -29,10 +29,25 @@ wss.on('connection', (ws, req) => {
 
     switch (messageJSON.command) {
       case 'latestBlock':
-        ws.send(api.latestBlock());
+        api.latestBlock(ws);
         break;
       case 'latestBlockNumber':
-        ws.send(api.latestBlockNumber());
+        api.latestBlockNumber(ws);
+        break;
+      case 'getAccounts':
+        api.getAccounts(ws);
+        break;
+      case 'getBalance':
+        try {
+          let address = messageJSON.address;
+          api.getBalance(ws, address);
+        } catch (e) {
+          console.log(`> error - parse JSON: ${e}`);
+        }
+        break;
+      case 'accountsInfo':
+        api.accountsInfo(ws);
+        break;
       default:
         console.log(`> pong: ${message}`);
         ws.send(`pong: ${message}`);
