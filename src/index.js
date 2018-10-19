@@ -37,16 +37,31 @@ wss.on('connection', (ws, req) => {
       case 'getAccounts':
         api.getAccounts(ws);
         break;
+      case 'getBalanceWei':
+        try {
+          let address = messageJSON.address;
+          api.getBalanceWei(ws, address);
+        } catch (e) {
+          console.log(`> error - parse JSON: ${e}`);
+        }
+        break;
       case 'getBalance':
         try {
           let address = messageJSON.address;
-          api.getBalance(ws, address);
+          api.getBalanceEth(ws, address);
         } catch (e) {
           console.log(`> error - parse JSON: ${e}`);
         }
         break;
       case 'accountsInfo':
         api.accountsInfo(ws);
+        break;
+      case 'debugContractsInfo':
+        api.debugContractsInfo();
+        break;
+      // TODO remove
+      case 'getToken':
+        api.testTokenContract();
         break;
       default:
         console.log(`> pong: ${message}`);
