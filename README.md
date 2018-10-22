@@ -31,13 +31,43 @@ Console output standard
     > what we send
             console.log(`> pong: ${message}`);
             ws.send(`pong: ${message}`);
-    = internal 
+    = internal
             console.log(`= message: ${message}`);
-    
+
     < what we get
-            
-    
+
+
 ```
+
+Web3 API available requests - Geth Node
+==================================
+
+**latestBlock:**
+	- message = `{ "command" : "latestBlock" }`
+	- returns: full recent found block in JSON format
+
+**latestBlockNumber:**
+	- message = { "command" : "latestBlockNumber" }
+	- returns: recent found block number
+
+**getAccounts:**
+	- message = `{ "command" : "getAccounts" }`
+	- returns: array of available local accounts (ethereum addresses)
+
+**getBalanceWei:**
+	- message = `{ "command" : "getBalanceWei", "address":"0xaccountaddressinhexformat" }`
+	- requires: account address
+	- returns: balance in Wei (the smallest ether unit) for given address
+
+**getBalanceEth:**
+	- message = `{ "command" : "getBalanceEth", "address":"0xaccountaddressinhexformat" }`
+	- requires: account address
+	- returns: balance in Ether for given address
+
+**accountsInfo:**
+	- message = `{ "command" : "accountsInfo" }`
+	- returns: JSON object with debug informations about local accounts
+
 
 Express & ES6 REST API Boilerplate
 ==================================
