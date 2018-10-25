@@ -21,16 +21,26 @@ module.exports = {
       config.tokenContractAddress, {
         from: config.contractsOwnerAddress, // default 'from' address
         gasPrice: config.gasPrice,
-        gas: config.gasLimit,  // gas limit - The maximum gas provided for a transaction
+        gas: 1000000  // gas limit - The maximum gas provided for a transaction
     });
   },
   getDepositContract() {
-    const TokenContract = web3.eth.contract(contractsImpl.PlatformDeposit.abi);
-    return TokenContract.at(config.depositContractAddress);
+    return new web3.eth.Contract(
+      contractsImpl.PlatformDeposit.abi,
+      config.depositContractAddress, {
+        from: config.contractsOwnerAddress, // default 'from' address
+        gasPrice: config.gasPrice,
+        gas: 1000000  // gas limit - The maximum gas provided for a transaction
+    });
   },
   getGameContract() {
-    const TokenContract = web3.eth.contract(contractsImpl.JoyGameDemo.abi);
-    return TokenContract.at(config.demoGameContractAddress);
+    return new web3.eth.Contract(
+      contractsImpl.JoyGameDemo.abi,
+      config.demoGameContractAddress, {
+        from: config.contractsOwnerAddress, // default 'from' address
+        gasPrice: config.gasPrice,
+        gas: 1000000  // gas limit - The maximum gas provided for a transaction
+    });
   },
 
   debugContractsInfo() {
@@ -47,10 +57,30 @@ module.exports = {
 
   testTokenContract() {
     let Token = this.getTokenContract();
+    Token.methods.name().call()
+      .then( (result) => {
+          console.log(`Asset full name: ${ result }`);
+      });
+    Token.methods.symbol().call()
+      .then( (result) => {
+          console.log(`Asset symbol: ${ result }`);
+      });
     Token.methods.totalSupply().call()
       .then( (result) => {
           console.log(`Total supply: ${ result }`);
       });
+    Token.methods.decimals().call()
+      .then( (result) => {
+          console.log(`Decimal places: ${ result }`);
+      });
+  },
+
+  /* -------------------------------Joy Platform Functions--------------------------------------- */
+
+
+  getBalanceJoyCoin(address) {
+    let Token = this.getTokenContract();
+    return Token.methods.balanceOf(address).call();
   },
 
   /* ---------------------------------ETH Functions---------------------------------------------- */
@@ -66,7 +96,6 @@ module.exports = {
     });
   },
   latestBlockNumber(ws) {
-    // NOT WORK
     var bNum = web3.eth.getBlockNumber( (error, block_number) => {
       if (!error) {
         console.log(block_number);
@@ -93,21 +122,15 @@ module.exports = {
   },
   // “wei” are the smallest ether unit,
   // calculations should be done always in wei and convert only for display reasons.
-  getBalanceWei(ws, address) {
-    web3.eth.getBalance(address)
-      .then(balance => {
-         ws.send(balance);
-      });
+  getBalanceWei(address) {
+    return web3.eth.getBalance(address);
   },
-  getBalanceEth(ws, address) {
-    web3.eth.getBalance(address)
+  getBalanceEth(address) {
+    return web3.eth.getBalance(address)
       .then(balance => {
         //ws.send(web3.utils.fromWei(balance, 'ether'));
         //console.log(`typeof ${ typeof(web3.utils.fromWei(balance, 'ether')) }`);
         return web3.utils.fromWei(balance, 'ether');
-      })
-      .then(ethBalance => {
-        ws.send(ethBalance);
       });
   },
   // function only for debug printing info

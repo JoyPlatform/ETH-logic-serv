@@ -31,35 +31,73 @@ wss.on('connection', (ws, req) => {
       case 'latestBlock':
         api.latestBlock(ws);
         break;
+
       case 'latestBlockNumber':
         api.latestBlockNumber(ws);
         break;
+
       case 'getAccounts':
         api.getAccounts(ws);
         break;
-      case 'getBalanceWei':
-        try {
-          let address = messageJSON.address;
-          api.getBalanceWei(ws, address);
-        } catch (e) {
-          console.log(`> error - parse JSON: ${e}`);
-        }
-        break;
+
       case 'getBalance':
         try {
           let address = messageJSON.address;
-          api.getBalanceEth(ws, address);
+          switch (messageJSON.unit) {
+            case 'Eth':
+              api.getBalanceEth(address)
+                .then(ethBalance => {
+                  let response = new Object({});
+                  response.command = messageJSON.command + '_RES';
+                  response.user = address;
+                  response.unit = messageJSON.unit;
+                  response.balance = ethBalance;
+                  ws.send(JSON.stringify(response));
+                });
+              break;
+            case 'Wei':
+              api.getBalanceWei(address)
+                .then(weiBalance => {
+                  let response = new Object({});
+                  response.command = messageJSON.command + '_RES';
+                  response.user = address;
+                  response.unit = messageJSON.unit;
+                  response.balance = weiBalance;
+                  ws.send(JSON.stringify(response));
+                });
+              break;
+            case 'JoyAsset':
+              api.getBalanceJoyCoin(address)
+                .then(joyBalance => {
+                  let response = new Object({});
+                  response.command = messageJSON.command + '_RES';
+                  response.user = address;
+                  response.unit = messageJSON.unit;
+                  response.balance = joyBalance;
+                  ws.send(JSON.stringify(response));
+                });
+              break;
+            }
         } catch (e) {
           console.log(`> error - parse JSON: ${e}`);
+          ws.send(`"JSON error ${ e }"`);
         }
         break;
+
+
+      case 'getBalanceJoy':
+        let address = messageJSON.address;
+        break;
+
       case 'accountsInfo':
         api.accountsInfo(ws);
         break;
+
       case 'debugContractsInfo':
         api.debugContractsInfo();
         break;
-      // TODO remove
+
+      // only debug information to console
       case 'getToken':
         api.testTokenContract();
         break;
