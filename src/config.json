@@ -1,4 +1,9 @@
 {
 	"port": 8010,
-	"gethPwd": "/Users/bartlomiejsmagacz/Library/Ethereum/testnet/geth.ipc"
+	"gethPwd": "/Users/bartlomiejsmagacz/Library/Ethereum/testnet/geth.ipc",
+	"contractsOwnerAddress": "0xcf69bbf7cdb6e7eb9c54ad2ea1ab05bd87e768ad",
+	"tokenContractAddress": "0xa295e2d99984876853fa55021f7da655ab569643",
+	"depositContractAddress": "0xe11fe8e7e43437416d514fb69678530b61c6ca54",
+	"demoGameContractAddress": "0x42a74a8383a1547b4e5272b9a3bf87681a20d10",
+	"gasPrice": "80000000000"
 }
