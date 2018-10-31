@@ -12,7 +12,7 @@
           <b-form-input v-model="getBalanceReturn" type="text" placeholder="Return" disabled></b-form-input>
         </b-col>
         <b-col cols="4">
-          <button v-on:click="latestBlock">latestBlock</button>
+          <button v-on:click="sendRequest('latestBlock')">latestBlock</button>
         </b-col>
         <b-col cols="4">3 of 3</b-col>
       </b-row>
@@ -52,8 +52,8 @@
       this.messageListener();
     },
     methods: {
-      sendRequest(requested) {
-        this.$root.websocket.send(requested);
+      sendRequest(command) {
+        this.$root.websocket.send(`{ "command": "${command}" }`);
       },
       sendRequestCommand(command, requested) {
         let sendString;
@@ -66,9 +66,6 @@
         }
         console.log(sendString);
         this.$root.websocket.send(sendString);
-      },
-      latestBlock() {
-        this.$root.websocket.send('{ "command" : "latestBlock" }');
       },
       messageListener() {
         const ourThis = this;
