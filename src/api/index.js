@@ -77,21 +77,38 @@ module.exports = {
 
   /* -------------------------------Joy Platform Functions--------------------------------------- */
 
-
   getBalanceJoyCoin(address) {
     let Token = this.getTokenContract();
     return Token.methods.balanceOf(address).call();
   },
 
+  // player funds inside deposit contract
+  getPlayerDeposit(address) {
+    let Deposit = this.getDepositContract();
+    return Deposit.methods.balanceOfPlayer(address).call();
+  },
+
+  // player funds that are locked inside deposit contract for the time of the game session
+  getPlayerLockedFunds(address) {
+    let Deposit = this.getDepositContract();
+    return Deposit.methods.playerLockedFunds(address).call();
+  },
+
   /* ---------------------------------ETH Functions---------------------------------------------- */
 
   latestBlock(ws) {
-    const blockInfo = web3.eth.getBlock('latest', (error, result) => {
+    web3.eth.getBlock('latest', (error, result) => {
+      let response = new Object({});
+      response.command = 'latestBlock_RES';
       if (!error) {
-        console.log(result);
-        ws.send(JSON.stringify(result));
+        response.data = JSON.stringify(result);
+        response.status = 0;
+        ws.send(JSON.stringify(response));
       } else {
         console.error(error);
+        response.status = 1;
+        response.status_err = `callback error: ${ error } `;
+        ws.send(JSON.stringify(response));
       }
     });
   },
