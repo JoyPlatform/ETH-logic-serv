@@ -95,7 +95,25 @@ module.exports = {
   },
 
   /* ---------------------------------ETH Functions---------------------------------------------- */
+  subscribe_newBlockHeaders() {
+    return web3.eth.subscribe('newBlockHeaders', function(error, result){
+      if (error)
+        console.log(`ERROR in subscribe newBlockHeaders : ${ error }`);
+    });
+      // unsubscribes the subscription
+      /*
+      subscription.unsubscribe(function(error, success){
+          if(success)
+              console.log('Successfully unsubscribed!');
+      });
+      */
+  },
 
+  // Get block header,
+  // block ID could be block number or block hash
+  getBlockHeader(blockID) {
+    return web3.eth.getBlock(blockID);
+  },
   latestBlock(ws) {
     web3.eth.getBlock('latest', (error, result) => {
       let response = new Object({});
